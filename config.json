@@ -1,0 +1,20 @@
+{
+   "Email": {
+      "SMTP": {
+         "Server": "255.255.255.255"
+      },
+      "From": "user@domain.net",
+      "To": [
+         "user2@domain.net",
+         "user3@domain.net"
+      ],
+      "Subject": "New release of ...",
+      "Email as HTML": true,
+      "Email template file": "./VersionEmailer/template.html"
+   },
+   "Log": {
+      "File path": "./",
+      "File logging enabled": true,
+      "Log level": "Debug"
+   }
+}
