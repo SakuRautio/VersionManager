@@ -1,0 +1,5 @@
+Title: {title}
+Version: {version}
+Author: {author}
+Changelog:
+{changeLog}

@@ -1,0 +1,19 @@
+name: CI
+
+on: [push]
+
+jobs:
+  Test_VersionFileGenerator:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build binary
+      run: |
+        cd ./VersionFileGenerator/tests
+        sh ./configure
+        make clean
+        make
+    - name: Run binary
+      run: |
+        cd ./VersionFileGenerator/tests
+        make run

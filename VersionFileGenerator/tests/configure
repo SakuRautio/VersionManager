@@ -1,0 +1,16 @@
+########################################################
+# The test runner for verifying that the scripts       #
+# work and that they are able to be used in programs.  #
+#                                                      #
+# Author: Saku Rautio                                  #
+# Date: 2020-01-25                                     #
+# License: MIT                                         #
+########################################################
+
+echo "Installing dependencies"
+pip3 install -r ../../requirements.txt
+
+echo "Generating version source file"
+python3 ../../version_manager.py generate ../version_file_source.template ./version.c "1.2.3-a.10"
+
+exit 0
