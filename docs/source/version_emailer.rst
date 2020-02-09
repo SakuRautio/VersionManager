@@ -1,7 +1,7 @@
-Version Manager
+Version Emailer
 ===============
 
-.. automodule:: version_manager
+.. automodule:: version_emailer
    :members:
    :undoc-members:
    :show-inheritance:

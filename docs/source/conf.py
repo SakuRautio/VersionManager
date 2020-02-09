@@ -13,6 +13,8 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('../..'))
+sys.path.insert(0, os.path.abspath('../../VersionEmailer'))
+sys.path.insert(0, os.path.abspath('../../VersionFileGenerator'))
 
 
 # -- Project information -----------------------------------------------------
@@ -28,6 +30,13 @@ author = 'Saku Rautio'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = ['sphinx.ext.napoleon']
+
+# This value selects if automatically documented members are sorted alphabetical
+# (value 'alphabetical'), by member type (value 'groupwise') or by source order
+# (value 'bysource'). The default is alphabetical.
+#
+# Note that for source order, the module must be a Python module with the source code available.
+autodoc_member_order = 'bysource'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

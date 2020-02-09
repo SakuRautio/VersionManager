@@ -1,7 +1,7 @@
-Version Emailer module
+Version File Generator
 ======================
 
-.. automodule:: VersionEmailer/email
+.. automodule:: version_file_generator
    :members:
    :undoc-members:
    :show-inheritance:

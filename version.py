@@ -38,19 +38,19 @@ class Version:
         major    (int): The major version number of the version
         minor    (int): The minor version number of the version
         bug      (int): The bug version number of the version
-        stage    (int): The stage of the version
+        stage    (Version.Stage): The stage of the version
         stageRev (int): The stage revision of the version
     """
     @unique
     class Stage(IntEnum):
         """The different stages the program can be set.
         """
+        UNKNOWN = -1,
         DEVELOPMENT = 0,
         RELEASE = 1,
         RELEASE_CANDIDATE = 2,
         ALPHA = 3,
-        BETA = 4,
-        UNKNOWN = numpy.iinfo('uint8').max
+        BETA = 4
     StageStringsToStages = {
         'dev': Stage.DEVELOPMENT,
         'rel': Stage.RELEASE,
@@ -59,11 +59,11 @@ class Version:
         'beta': Stage.BETA
     }
     def __init__(self):
-        self.major = numpy.iinfo('uint8').max
-        self.minor = numpy.iinfo('uint8').max
-        self.bug = numpy.iinfo('uint8').max
+        self.major = -1
+        self.minor = -1
+        self.bug = -1
         self.stage = self.Stage.UNKNOWN
-        self.stageRev = numpy.iinfo('uint8').max
+        self.stageRev = -1
     def __str__(self):
         asDict = dict()
         asDict['major'] = self.major
@@ -113,21 +113,19 @@ class Version:
         output = subprocess.check_output(['git', 'rev-parse', '--verify', 'HEAD~1']).decode('utf-8')
         return str(output).replace('\r','').replace('\n','')
     @staticmethod
-    def GetCommitsBetweenIds(start: str, stop: str) -> list:
+    def GetCommitsBetweenIds(newer: str, older: str) -> list:
         """
         Get a list of commits between two Git commits.
         
         Args:
-            start (str): The start of the comparison as
-            a Git commit id.
-            stop (str): The end of the comparison as
-            a Git commit id.
+            newer (str): The newer Git commit id for the comparison.
+            older (str): The older Git commit id for the comparison.
         
         Returns:
             A list of commits.
         """
         commits = list()
-        output = subprocess.check_output(['git', 'log', start, '...', stop]).decode('utf-8')
+        output = subprocess.check_output(['git', 'log', '{newer}...{older}'.format(newer=newer, older=older)]).decode('utf-8')
         if (len(output) < 1):
             return commits
         commitLog = str(output).split('\n')
@@ -172,37 +170,40 @@ class Version:
         return commits
     @staticmethod
     def GenerateVersionFromString(versionString: str):
-        """
-        Create an instance of the Version class based
-        on the tag string.
+        """Create an instance of the Version class based on the tag string.
         
         Args:
-            versionString (str): The Git tag in human
-            readable format.
+            versionString (str): The Git tag in human readable format.
         
         Returns:
             An instance of the Version class.
         """
         version = Version()
         # Get major
-        majorString = versionString.split('.', 1)[0]
-        version.major = int(majorString, 10)
-        restOfTheString = versionString.split('.', 1)[1]
+        versionString = versionString.split('.', 1)
+        version.major = int(versionString[0])
+        if (len(versionString) < 2):
+            return version
         # Get minor
-        minorString = restOfTheString.split('.', 1)[0]
-        version.minor = int(minorString, 10)
-        restOfTheString = restOfTheString.split('.', 1)[1]
+        versionString = versionString[1].split('.', 1)
+        version.minor = int(versionString[0])
+        if (len(versionString) < 2):
+            return version
         # Get bug
-        bugString = restOfTheString.split('-', 1)[0]
-        version.bug = int(bugString, 10)
-        restOfTheString = restOfTheString.split('-', 1)[1]
+        versionString = versionString[1].split('-', 1)
+        version.bug = int(versionString[0])
+        if (len(versionString) < 2):
+            return version
         # Get stage
-        stageString = restOfTheString.split('.', 1)[0]
-        version.stage = Version.StageStringsToStages.get(stageString, Version.Stage.UNKNOWN)
-        restOfTheString = restOfTheString.split('.', 1)[1]
-        # Get stage revision
-        stageRevString = restOfTheString
-        version.stageRev = int(stageRevString, 10)
+        versionString = versionString[1].split('.', 1)
+        version.stage = Version.StageStringsToStages.get(versionString[0], Version.Stage.UNKNOWN)
+        if (len(versionString) < 2):
+            return version
+        # Get stage rev
+        versionString = versionString[1]
+        version.stageRev = int(versionString)
+        if (len(versionString) < 2):
+            return version
         # Return result
         return version
     @staticmethod
@@ -255,15 +256,18 @@ def HandleDiffCommand(argv: list, argc: int) -> ErrorCode:
     """
     
     difference = Version.GetCommitsBetweenIds(fromArg, toArg)
-    difference = list(map(
-        lambda commit: \
-            '=========================================\n' + \
-            'Author: {0}\n'.format(commit.author) +\
-            'Date: {0}\n'.format(Date.ConvertDateToString(commit.date)) + \
-            'Title: {0}\n'.format(commit.title) +\
-            'Message: \n{0}'.format(commit.message),
+    difference = ''.join(list(map(
+        lambda commit:
+"""
+=========================================
+Author: {0}
+Date: {1}
+Title: {2}
+Message: {3}
+=========================================
+""".format(commit.author.name, Date.ConvertDateToString(commit.date), commit.title, commit.message),
         difference
-    ))
+    )))
     print(responseTemplate.format(fromArg, toArg, difference))
 
     return result

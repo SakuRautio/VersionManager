@@ -34,8 +34,8 @@ def GenerateVersionFileFromVersion(version: Version, templateFilePath: str, vers
     
     Args:
         version (Version):
-            An instance of the Version class, which is an onject
-            representation of the version tag string.
+            An instance of the Version class, which is an object representation of the version tag string.
+        templateFilePath (str): Path to the template file for a version file.
         versionFilePath (str):
             The path to the version source file which is to be generaated.
     

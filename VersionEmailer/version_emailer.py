@@ -27,15 +27,6 @@ LOG_TAG = "Email"
 from version import Version
 
 class HTMLEmail:
-   COMMIT_LIST_ITEM_FORMAT = \
-"""
-<li>
-   {title}
-   {author}
-   {date}
-   {message}
-</li>
-"""
    @staticmethod
    def Send(templateFilePath: str, commits: list) -> ErrorCode:
       """
@@ -44,14 +35,21 @@ class HTMLEmail:
       settings (subject, to, from) from the config.json.
 
       Args:
-         templateFilePath (str): The path to the
-         email template file.
-         commits (list): The list of commits to
-         list in the email.
+         templateFilePath (str): The path to the email template file.
+         commits (list): The list of commits to list in the email.
       
       Returns:
          An ErrorCode object telling what the outcome of calling the function was.
       """
+      COMMIT_LIST_ITEM_FORMAT = \
+"""
+<li>
+   {title}
+   {author}
+   {date}
+   {message}
+</li>
+"""
       config = Config.GetConfig()
       email = EmailMessage()
       email['Subject'] = config.get('Email').get('Subject')
@@ -98,13 +96,6 @@ class HTMLEmail:
       return ErrorCode.OK
 
 class TextEmail:
-   COMMIT_LIST_ITEM_FORMAT = \
-"""
-   *  {title}
-      {author}
-      {date}
-      {message}
-"""
    @staticmethod
    def Send(templateFilePath: str, commits: list) -> ErrorCode:
       """
@@ -113,14 +104,19 @@ class TextEmail:
       settings (subject, to, from) from the config.json.
 
       Args:
-         templateFilePath (str): The path to the
-         email template file.
-         commits (list): The list of commits to
-         list in the email.
+         templateFilePath (str): The path to the email template file.
+         commits (list): The list of commits to list in the email.
       
       Returns:
         An ErrorCode object telling what the outcome of calling the function was.
       """
+      COMMIT_LIST_ITEM_FORMAT = \
+"""
+   *  {title}
+      {author}
+      {date}
+      {message}
+"""
       email = EmailMessage()
       email['Subject'] = config.get('Email').get('Subject')
       email['To'] = config.get('Email').get('To')
@@ -175,7 +171,8 @@ def HandleCommand(argv: list, argc: int) -> ErrorCode:
    Handle a command given to this module
 
    Args:
-      args (list): The given arguments.
+      argv (list): The given arguments.
+      argc (int): The count of given arguments
 
    Returns:
       An ErrorCode object telling what the outcome of calling the function was.

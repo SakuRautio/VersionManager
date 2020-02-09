@@ -26,17 +26,16 @@ class Date:
       """
       return x.strftime(Date.ISO_8601_FORMAT)
    @staticmethod
-   def ConvertStringToDateWithFormat(customFormat: str, x: str) -> datetime:
+   def ConvertStringToDateWithFormat(customFormat: str, x: datetime) -> datetime:
       """
-      Convert the given date into a custom
-      formatted string.
+      Convert the given custom formatted string to a date object.
       """
       return datetime.strptime(x, customFormat)
    @staticmethod
    def ConvertGitStringToDate(x: str) -> datetime:
       """
       Convert the given string, which is formatted
-      in the way Git formats dates, into a date.
+      in the way Git formats dates, into a datetime object.
       """
       return Date.ConvertStringToDateWithFormat(Date.GIT_STRING_FORMAT, x)
    @staticmethod

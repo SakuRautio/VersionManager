@@ -1,5 +1,5 @@
-ErrorCode module
-================
+ErrorCode
+=========
 
 .. automodule:: error_code
    :members:

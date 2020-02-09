@@ -1,5 +1,5 @@
-Git module
-==========
+Git
+===
 
 .. automodule:: git
    :members:

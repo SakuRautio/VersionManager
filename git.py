@@ -27,7 +27,7 @@ class Commit:
    Attributes:
       hash (str): The hash of the commit.
       author (User): The author of the commit.
-      date (datetime.datetime) The datetimestamp of the commit.
+      date (datetime.datetime): The timestamp of the commit.
       title (str): The title of the commit.
       message (str): The message of the commit.
    """
