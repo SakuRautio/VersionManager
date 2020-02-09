@@ -7,6 +7,10 @@
 # License: MIT                                         #
 ########################################################
 
+echo "Setting up virutal environment"
+python3 -m venv ./venv
+source ./venv/bin/activate
+
 echo "Installing dependencies"
 pip3 install -r ../../requirements.txt
 
