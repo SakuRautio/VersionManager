@@ -19,10 +19,9 @@ class Logger:
    """
    Provide an API for a logger for the program,
    which prints out logged messages to the terminal
-   and saves the logged messages to a log file.
+   and saves the logged messages to a log file (if enabled in the 'config.json' and the file path is set).
    """
-   LOG_FILE = 'version_manager_{0}.log'
-   TIMESTAMP_FORMAT = 'YYYY-MM-DD_HH-mm-ss'
+   LOG_FILE = 'version_manager_{timestamp}.log'
    LOG_MESSAGE_FORMAT = '[{level}:{timestamp}:{tag}]: {message}'
    @unique
    class LogLevel(IntEnum):
@@ -66,7 +65,7 @@ class Logger:
          message (str): The message to log to file.
 
       """
-      logFileName = Logger.LOG_FILE.format(Logger.time)
+      logFileName = Logger.LOG_FILE.format(timestamp=Logger.time)
       config = Config.GetConfig()
       logFilePath = config['Log']['File path']
       logFilePath = os.path.join(logFilePath, logFileName)
@@ -92,7 +91,7 @@ class Logger:
       """
       logMessage = Logger.LOG_MESSAGE_FORMAT.format(
          level=Logger.LogLevelsToStrings.get(Logger.LogLevel.ERROR, 'Unknown'),
-         timestamp=datetime.now().strftime(Logger.TIMESTAMP_FORMAT),
+         timestamp=datetime.now().strftime(Date.ISO_8601_FORMAT),
          tag=tag,
          message=message
       )
@@ -112,7 +111,7 @@ class Logger:
       """
       logMessage = Logger.LOG_MESSAGE_FORMAT.format(
          level=Logger.LogLevelsToStrings.get(Logger.LogLevel.WARNING, 'Unknown'),
-         timestamp=datetime.now().strftime(Logger.TIMESTAMP_FORMAT),
+         timestamp=datetime.now().strftime(Date.ISO_8601_FORMAT),
          tag=tag,
          message=message
       )
@@ -132,7 +131,7 @@ class Logger:
       """
       logMessage = Logger.LOG_MESSAGE_FORMAT.format(
          level=Logger.LogLevelsToStrings.get(Logger.LogLevel.INFO, 'Unknown'),
-         timestamp=datetime.now().strftime(Logger.TIMESTAMP_FORMAT),
+         timestamp=datetime.now().strftime(Date.ISO_8601_FORMAT),
          tag=tag,
          message=message
       )
@@ -152,7 +151,7 @@ class Logger:
       """
       logMessage = Logger.LOG_MESSAGE_FORMAT.format(
          level=Logger.LogLevelsToStrings.get(Logger.LogLevel.DEBUG, 'Unknown'),
-         timestamp=datetime.now().strftime(Logger.TIMESTAMP_FORMAT),
+         timestamp=datetime.now().strftime(Date.ISO_8601_FORMAT),
          tag=tag,
          message=message
       )

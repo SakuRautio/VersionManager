@@ -17,17 +17,15 @@ LOG_TAG = "Config"
 
 class Config:
    """
-   Parse and provide the config.json.
+   Parse and provide the config.json's data.
    """
    config = None
    @staticmethod
    def InitConfig() -> ErrorCode:
       """
-      Initialize the global variable 'CONFIG' so that
-      other modules can use it. Read the data from
-      the 'config.json' to the 'CONFIG' variable,
-      making it a dictionary representation of the
-      'config.json' file contents.
+      Read the data from the 'config.json' to initialize the
+      static 'config' class variable, making it a dictionary
+      representation of the 'config.json' file contents.
 
       Returns:
          An error code from the ErrorCode class.
@@ -42,6 +40,12 @@ class Config:
       return ErrorCode.OK 
    @staticmethod
    def GetConfig() -> dict:
+      """
+      Return the parsed config.json object as a dict.
+
+      Returns:
+         The config file data as a dict.
+      """
       if (Config.config == None):
          Config.InitConfig()
       return Config.config

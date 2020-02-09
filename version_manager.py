@@ -16,10 +16,22 @@ from config import Config
 from logger import Logger
 LOG_TAG = "Manager"
 import version
-import VersionEmailer.email as emailer
+import VersionEmailer.version_emailer as emailer
 import VersionFileGenerator.version_file_generator as versionFileGenerator
 
-HELP_MESSAGE = \
+
+def PrintHelp(argv: list, argc: int) -> ErrorCode:
+   """
+   Print a help message on how to use the Version Manager.
+
+   Args:
+      argv (list): The given arguments.
+      argc (int): The count of given arguments.
+   
+   Returns:
+      An ErrorCode object telling what the outcome of calling the function was.
+   """
+   HELP_MESSAGE = \
 """
 The version manager program.
 
@@ -36,8 +48,6 @@ Optional:
    help   Print this message.
    Use '<command> help' to get information about that particular command.
 """
-
-def PrintHelp(argv: list, argc: int) -> ErrorCode:
    print(HELP_MESSAGE)
    return ErrorCode.OK
 
